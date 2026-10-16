@@ -430,7 +430,11 @@ define([
                     elem.addEventListener ? elem.addEventListener( type, fn, false ) : elem.attachEvent( "on" + type, fn );
                 };
 
-                var eventname='wheel';
+                // The PDF viewer (sdkjs pdf/src/viewer.js) scrolls from this element's legacy onmousewheel, and Chromium and
+                // Safari run an element's mousewheel listeners only when it has no wheel listener: a wheel listener here
+                // stops the document scrolling by mouse wheel and touchpad. Ctrl+wheel zooms here there; Firefox fires no
+                // mousewheel, and zooms by the document's wheel listener below.
+                var eventname='mousewheel';
                 addEvent(me.documentHolder.el, eventname, _.bind(me.handleDocumentWheel, me));
             }
 
